@@ -19,25 +19,21 @@
 # opengl32
 # oleaut32
 
-BINARYPATH := $(ROOT)/bin
+BINPATH := $(ROOT)/bin
 
 # Build with g++
 CXX := g++
 
 # Flags
-CXXFLAGS := -std=c++11 -I$(ROOT)/include
+CXXFLAGS := -std=c++11
+CPPFLAGS := -I$(ROOT)/include
 LDFLAGS += $(addprefix -l, $(LIBS))
 
 # Source files and target executables
-SOURCES := $(wildcard *.cc)
 TARGETS := $(basename $(SOURCES))
 
-# Default source and object files
-SRCS    ?= $(wildcard *.cc) $(wildcard *.cpp) $(wildcard *.c)
-OBJS    ?= $(addprefix obj/,$(patsubst %.cpp,%.o,$(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(SRCS)))))
-
 # Targets to build recursively into $(DIRS)
-RECURSIVE_TARGETS  ?= all clean
+RECURSIVE_TARGETS ?= all test
 
 # If not set, the build path is just the current directory name
 MAKEPATH ?= `basename $(PWD)`
@@ -51,13 +47,16 @@ all:: $(TARGETS)
 
 # Clean up after a build
 clean::
-	echo no
+	rm $(BINPATH)/*
 
-.PHONY: all clean
+test::
+
+
+.PHONY: all clean test
 
 $(TARGETS):
-	@echo $(LOG_PREFIX) Compiling $@ $< $(LOG_SUFFIX)
-	$(CXX) $(CXXFLAGS) -o $@ $@.cc $(LDFLAGS)
+	@echo $(LOG_PREFIX) Compiling $@ $(LOG_SUFFIX)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $(BINPATH)/$@ $(addsuffix .cc, $@) $(LDFLAGS)
 
 $(RECURSIVE_TARGETS)::
 	@for dir in $(DIRS); do \
