@@ -1,4 +1,5 @@
-# Makefile to build srslbp
+# Makefile for building BILDE executables
+
 #   Template lifted from Charlie Curtsinger's Makefile from CSC213/S18 Coursework on 6/15/2018
 #   Edited by Logan Goldberg and Jerod Weinman on 6/15/2018
 
